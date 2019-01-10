@@ -6,7 +6,7 @@ It was specifically built to help with encrypting and decrypting data for [NeDB]
 
 ## API
 
-### `generateKey(password: string, salt?: string): Promise<{ secret: string, salt: string }>``
+### `generateKey(password: string, salt?: string): Promise<{ secret: string, salt: string }>`
 Generate a key and salt using a password. If salt is not provided, a new key will
 be generated each time, so make sure you save the salt! Returns a promise with the secret
 key and the salt. You should never store the secret
