@@ -9,6 +9,8 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "declaration": true,
+    "strict": true, 
     "paths": {
       "*": [
         "node_modules/*",

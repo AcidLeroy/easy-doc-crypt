@@ -1,18 +1,21 @@
 {
-  "name": "salt-test",
+  "name": "easy-doc-crypt",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "npm run build",
+    "test": "tsc -p tsconfig.json && node dist/index.test.js",
     "build": "tsc -p tsconfig.json"
   },
   "keywords": [],
-  "author": "",
+  "author": "AcidLeroy",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^10.12.18",
-    "libsodium-wrappers": "^0.7.3"
+    "libsodium-wrappers": "^0.7.3",
+    "typescript": "^3.2.2"
   },
   "devDependencies": {
     "@types/libsodium-wrappers": "^0.7.0"
