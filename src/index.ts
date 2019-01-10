@@ -1,4 +1,8 @@
 import _sodium = require('libsodium-wrappers');
+
+async function ready(){
+  await _sodium.ready;
+}
 /**
  * Geneate a key for encryption using a password
  * @param  password A string that represents the password
@@ -6,8 +10,7 @@ import _sodium = require('libsodium-wrappers');
  *                  get the same key out each time after the seed is generated, it must be passed in.
  * @return          returns the secret keey and the seed. DO NOT STORE THE SECRET KEY, onlyt the seed
  */
-async function generateKey(password: string, salt?: string): Promise<{ secret: string, salt: string }> {
-  await _sodium.ready;
+function generateKey(password: string, salt?: string): { secret: string, salt: string } {
   const sodium = _sodium;
 
   // This salt would ideally be stored somewhere on disk after it is generated
@@ -28,8 +31,7 @@ async function generateKey(password: string, salt?: string): Promise<{ secret: s
  * @param  serializedData String that represents the serialized data
  * @return                Returns a ciphertext and header. They must be kept together in order decrypt the document later
  */
-async function encryptDocument(key: string, serializedData: string): Promise<{ cipherText: string, header: string }> {
-  await _sodium.ready;
+function encryptDocument(key: string, serializedData: string): { cipherText: string, header: string } {
   const sodium = _sodium;
   let s = sodium.crypto_secretstream_xchacha20poly1305_init_push(sodium.from_hex(key))
   let result = sodium.crypto_secretstream_xchacha20poly1305_push(s.state, sodium.from_string(serializedData),
@@ -44,8 +46,7 @@ async function encryptDocument(key: string, serializedData: string): Promise<{ c
  * @param  cipherText The cipher text of the document
  * @return            The string of the original data
  */
-async function decryptDocument(key: string, header: string, cipherText: string): Promise<string> {
-  await _sodium.ready;
+ function decryptDocument(key: string, header: string, cipherText: string): string {
   const sodium = _sodium;
   let s = sodium.crypto_secretstream_xchacha20poly1305_init_pull(sodium.from_hex(header), sodium.from_hex(key))
   let res = sodium.crypto_secretstream_xchacha20poly1305_pull(s, sodium.from_base64(cipherText, sodium.base64_variants.ORIGINAL));
@@ -62,4 +63,4 @@ async function decryptDocument(key: string, header: string, cipherText: string):
   return sodium.to_string(res.message)
 }
 
-export { generateKey, encryptDocument, decryptDocument }
+export { generateKey, encryptDocument, decryptDocument, ready }
